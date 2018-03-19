@@ -14,8 +14,8 @@ This tool is made for legal purpose only!!! It allows you to:
 -l: specify a list with bucket names to check.
 -w: specify a file to upload to a bucket.
 -r: specify a regular expression to filter the output.
--s: look only for files bigger than 's' bytes 
--m: look only for files smaller than 'm' bytes 
+-s: look only for files bigger than 's' bytes
+-m: look only for files smaller than 'm' bytes
 -t: specify number of threads to use.
 -o: specify an output file.
 -h: prints a help message.
@@ -90,7 +90,9 @@ def get_region(bucket_name):
         region = response.headers.get('x-amz-bucket-region')
         return region
     except Exception as e:
-        print "Error: couldn't connect to '{0}' bucket. Details: {1}".format(response, e)
+        print "Error: \
+        couldn't connect to '{0}' bucket. \
+        Details: {1}".format(response, e)
 
 
 def get_session(bucket_name, region):
@@ -107,7 +109,9 @@ def get_session(bucket_name, region):
         return bucket
 
     except Exception as e:
-        print "Error: couldn't create a session with '{0}' bucket. Details: {1}".format(bucket_name, e)
+        print "Error: \
+        couldn't create a session with '{0}' bucket. \
+        Details: {1}".format(bucket_name, e)
 
 
 def get_bucket(bucket_name):
@@ -171,15 +175,17 @@ def write_test(bucket_name, filename):
             data = open(filename, 'rb')
             bucket = get_bucket(bucket_name)
             bucket.put_object(Bucket=bucket_name, Key=filename, Body=data)
-            print "Success: bucket '{0}' allows for uploading arbitrary files!!!".format(bucket_name.encode('utf-8'))
+            print "Success: \
+            bucket '{0}' allows for uploading arbitrary files!!!".format(bucket_name.encode('utf-8'))
             results = "http://s3.{0}.amazonaws.com/{1}/{2}\n".format(region,
                                                                      bucket_name,
                                                                      filename)
             append_output(results)
         except Exception as e:
-            print "Error: couldn't upload a {0} file to {1}. Details: {2}\n".format(filename,
-                                                                                    bucket_name,
-                                                                                    e)
+            print "Error: \
+            couldn't upload a {0} file to {1}. Details: {2}\n".format(filename,
+                                                                      bucket_name,
+                                                                      e)
 
 
 def append_output(results):
@@ -235,17 +241,21 @@ The above command will:
 
 
 def closing_words():
-    print "That's all folks! All collectable files can be found in {0}.".format(settings._OUTPUT_FILE)
+    print "That's all folks! \
+          All collectable files can be found in {0}.".format(settings._OUTPUT_FILE)
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("-l", dest="bucket_list", required=True, help="a list with bucket names.")
+    parser.add_argument("-l", dest="bucket_list", required=True,
+                        help="a list with bucket names.")
     parser.add_argument("-w", dest="write", type=str, required=False,
                         default="", help="file to execute upload test.")
     parser.add_argument("-r", dest="regex", required=False,
                         default='', help="regular expression filter")
-    parser.add_argument("-s", dest="min", type=int, required=False, default=1, help="minimun size.")
-    parser.add_argument("-m", dest="max", type=int, required=False, default=0, help="maximum size.")
+    parser.add_argument("-s", dest="min", type=int, required=False, default=1,
+                        help="minimun size.")
+    parser.add_argument("-m", dest="max", type=int, required=False, default=0,
+                        help="maximum size.")
     parser.add_argument("-t", dest="threads", type=int, required=False,
                         default=10, help="thread count.")
     parser.add_argument("-o", dest="output", type=str, required=False,
